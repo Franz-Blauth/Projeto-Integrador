@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+<script>
+
+var db          = "";
+var codactivate = "";
+var numtimes    = 0;
+var loginJS     = [];
+var obj         = [];
+var rowscontrol = [];
+var db = null;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+}
+
+function onSuccessDB(codactivate){
+  document.addEventListener("backbutton", function() {}, false);
+  loginJS = [];
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM tabcontrol WHERE id=?', [1], function(tx, result) {
+      rowscontrol = result.rows;
+      navigator.notification.prompt('Digite o código que foi enviado por SMS.', onPrompt, 'Wolppi', ['Ok ',' Sair ', ' Não chegou'],);
+    }, null);
+  });
+}
+
+function onPrompt(results) {
+
+  codactivate = results.input1;
+
+  loginJS.push({codarea: rowscontrol.item(0).control4,
+                  phone: rowscontrol.item(0).control5,
+                 uniqid: rowscontrol.item(0).control3,
+            codactivate:codactivate});
+
+  obj = JSON.stringify(loginJS);
+
+  if(results.buttonIndex == 1){
+    checkCodactivateDB(obj);
+  }else{
+    deleteUser();
+  }
+};
+
+function checkCodactivateDB(obj) {
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if(this.readyState == 4 && this.status == 200) {
+      myObj = this.response;
+      if(testJSON(myObj)) {
+        verifyCodactivate(myObj);
+      }
+    }else{
+      conectionCheck(this.readyState, this.status);
+    }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/activate.php", true);
+
+  xmlhttp.timeout = 3000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "codactivate.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+function verifyCodactivate(myObj) {
+
+  var fileJson = JSON.parse(myObj);
+  var codactivateDB = fileJson[0].codactivate.toString();
+  if(codactivateDB != "YES"){
+    navigator.notification.confirm('Código Inválido!', onConfirm, 'Wolppi',  ['OK']);
+  }else{
+    updateUniqidInvitedDB();
+  }
+};
+
+function onConfirm(buttonIndex) {
+  numtimes = numtimes + 1;
+  if(numtimes > 2){
+    deleteUser();
+  }else{
+    onDeviceReady();
+  }
+}
+
+function deleteUser(){
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.response;
+       onSuccess103();
+    }else{
+        conectionCheck(this.readyState, this.status);
+    }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/deleteuser.php", true);
+
+  xmlhttp.timeout = 6000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "codactivate.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+
+}
+
+function onSuccess103(){
+  db.transaction(function(tx) {tx.executeSql('DROP TABLE users');});
+  navigator.notification.confirm('Para receber um novo código de validação, você deve Fechar e iniciar o Wolppi novamente.', onSuccess103 , 'Wolppi', ['OK']);
+}
+
+
+function updateUniqidInvitedDB(){
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if(this.readyState == 4 && this.status == 200) {
+      clearControl();
+    }
+    else{
+      conectionCheck(this.readyState, this.status);
+    }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/updateuniqidinvited.php", true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+}
+
+function clearControl(){
+
+  var clearcontrol1 = "";
+  var clearcontrol2 = "";
+  var clearcontrol3 = "";
+  var clearcontrol4 = "";
+  var clearcontrol5 = "";
+
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE tabcontrol SET control1=?, control2=?, control3=?, control4=?, control5=? WHERE id=?', [clearcontrol1, clearcontrol2, clearcontrol3, clearcontrol4, clearcontrol5, 1], updateOpenDoor)
+  });
+}
+
+function updateOpenDoor(){
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE users SET status=? WHERE id=?', ['opendoor', 1], function(tx, result) {
+       window.location.href = "users.html";
+    }, null);
+  });
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

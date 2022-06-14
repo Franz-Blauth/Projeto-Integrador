@@ -1,0 +1,99 @@
+<!--
+@Author: Franz Blauth <blauth>
+@Date:   2018-04-02T22:27:38-03:00
+@Email:  suportez@wolppi.com
+@Project: Wolppi
+@Last modified by:   blauth
+@Last modified time: 2018-04-02T22:32:23-03:00
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width, height=device-height, viewport-fit=cover">
+  <link rel="stylesheet" type="text/css" href="css/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css">
+  <link rel="stylesheet" href="jquery/jquery-ui-1.12.1.custom/jquery-ui.css" />
+  <link rel="stylesheet" href="jquery/jquery.timepicker.min.css">
+  <link rel="stylesheet" type="text/css" href="css/event.css">
+  <script src="jquery/jquery-1.8.2.js"></script>
+  <script src="jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <script src="jquery/jquery.timepicker.min.js"></script>
+  <script src="js/event.js"></script>
+  <script src="js/event2.js"></script>
+
+</head>
+
+<header>
+  <h5></h5>
+</header>
+
+<div class="background">
+  <img id="photo_blank" class="photo_blank" src="">
+  <div class="superior">
+    <a href="#" onclick="photoprofile_small()"><img id="photoprofile_big" class="photoprofile_big" src=""></a>
+  </div>
+</div>
+
+<body>
+  <p>
+    <a class="t-wolkki">Wolppi</a>
+    <a class="title">Evento</a>
+    <a class="i-return" href="#" onclick="callPageStart()"><i class="fa fa-angle-left"></i></a>
+  </p>
+  <p>
+    <a id="usernickname" class="usernickname" readonly="true" type="text" maxlength="20"></a>
+  </p>
+  <p>
+    <p>
+      <a href="#" onclick="photoprofile_big()"><img id="photoprofile" class="photoprofile" src=""></a>
+      <label class="lb_activity">Atividade:</label>
+      <a href="#" onclick="chooseActivity()"><img id="imgactivity" class="imgactivity" src=""></a>
+    </p>
+  <center>
+  <p>
+    <label class="lb-name_event">Nome Evento</label>
+    <input id="name" class="name" type="text">
+  </p>
+  <p>
+    <label class="lb-datestart">Início</label>
+    <input id="datestart" class="datestart" type="text" ><i class="far fa-calendar-alt"></i>
+    <input id="timestart" class="timestart" type="text" ><i class="far fa-clock"></i>
+  </p>
+  <p>
+    <label class="lb-datefinish">Término</label>
+    <input id="datefinish" class="datefinish" type="text" ><i class="far fa-calendar-alt"></i>
+    <input id="timefinish" class="timefinish" type="text"><i class="far fa-clock"></i>
+  </p>
+  <p>
+    <label class="lb-local">Local</label>
+    <textarea id="local" class="local" cols="30" rows="2"></textarea>
+  </p>
+  <p>
+    <label class="lb-info">Informações</label>
+    <textarea id="info" class="info" cols="30" rows="4"></textarea>
+  <p>
+    <input id="numok" readonly="true" class="num_ok"/>
+    <input id="numinvited" readonly="true" class="num_invited"/>
+    <input id="numno" readonly="true" class="num_no"/>
+  </p>
+  </center>
+<!-- A vida me ensinou a nunca desistir, nam ganhar nem perder mas procurar evoluir.
+podem me tirar tudo que tenho, só não pode me tirar as coisa boas que já fiz para quem eu amo... CBJr  -->
+  <p>
+    <a class="i-U_in" href="inviteyeseve.html"><i class="fa fa-users"></i></a>
+    <a href="#" onclick="callInvited()"><img class="imginvited" src="iconactivity/list.png"></img></a>
+    <a class="i-U_no" href="invitenoeve.html"><i class="fa fa-users"></i></a>
+  </p>
+  <p>
+    <label class="lb-U_ok">Confimados</label>
+    <label class="lb-U_invited">Lista</label>
+    <label class="lb-U_no">Pendentes</label>
+  <h6>&nbsp</h6>
+  <p>
+    <input id="btn-confirmar" type="submit" class="register" value="Concluir">
+  </p>
+</body>
+<script type="text/javascript" src="cordova.js"></script>
+
+</html>

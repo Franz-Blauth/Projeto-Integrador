@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<meta charset="utf-8">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+
+<body>
+
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript">
+
+document.getElementById("dots").value = "........";
+
+var invitedJS    = [];
+var myObj        = [];
+var fileJson     = "";
+var invitedrows  = "";
+var invitedparse = "";
+var obj          = "";
+var baseok       = " ";
+var numrows      = 0;
+var numtimes     = 0;
+var countJS      = 0;
+var db           = null;
+
+document.addEventListener("offline", onOffline, false);
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onOffline() {
+  window.location.href = "start.html";
+}
+
+function onSuccessDB(){
+
+  baseok = "1";
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE baseok=?', [baseok], function(tx, results) {
+      invitedrows = results.rows;
+      if (invitedrows.length > 0) {
+          createJson();
+      }
+      else{
+          window.location.href = "sinceraseinvited.html";
+      }
+    }, null);
+  });
+}
+
+function createJson() {
+  countJS = 0;
+  for (var i = 0; i < invitedrows.length; i++) {
+    if (invitedrows.item(i).uniqidevent.length == 23){
+        invitedJS.push({idapp: invitedrows.item(i).id,
+                  uniqidevent: invitedrows.item(i).uniqidevent,
+                useridinvited: invitedrows.item(i).useridinvited,
+                  invitedname: invitedrows.item(i).invitedname,
+                      codarea: invitedrows.item(i).codarea,
+                        phone: invitedrows.item(i).phone,
+                 invitedphoto: invitedrows.item(i).invitedphoto,
+                     datelist: invitedrows.item(i).datelist,
+                  dateinvited: invitedrows.item(i).dateinvited,
+             dateconfirmation: invitedrows.item(i).dateconfirmation,
+              invitedtowolppi: invitedrows.item(i).invitedtowolppi,
+                  createevent: invitedrows.item(i).createevent,
+                       baseok: invitedrows.item(i).baseok,
+                      eraseok: invitedrows.item(i).eraseok});
+    }
+    countJS = countJS + 1;
+  }
+  if (countJS >= invitedrows.length ){
+     if (invitedJS.length > 0){
+       createinvitedDB();
+     }else{
+       window.location.href = "sinceraseinvited.html";
+     }
+  }
+}
+
+function createinvitedDB() {
+  obj = JSON.stringify(invitedJS);
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.response;
+       if (testJSON(myObj)) {
+           updateinvited(myObj);
+       }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/inviteddb.php", true);
+
+  xmlhttp.timeout = 3000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "start.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+var count025 = 0;
+function updateinvited(myObj) {
+  console.log(myObj);
+  fileJson = JSON.parse(myObj);
+  baseok = "2";
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE invited SET baseok=? WHERE id=?', [baseok, fileJson[count025].idapp], onSuccess025);
+  });
+}
+
+function onSuccess025(){
+  count025 = count025 + 1;
+  if(count025 >= fileJson.length){
+    updatePhoto();
+  }else{
+    updateinvited(myObj);
+  }
+}
+
+var controlphoto = 0;
+function updatePhoto(){
+  if(controlphoto >= fileJson.length){
+    window.location.href = "sinceraseinvited.html";
+  }
+  var useridLength = fileJson[controlphoto].useridinvited.length
+  if(useridLength > 14){
+    downloadPhoto(fileJson[controlphoto].useridinvited);
+  }else{
+    controlphoto = controlphoto + 1;
+    updatePhoto();
+  }
+}
+
+function downloadPhoto(uniqidPhoto){
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function (e) {
+    if(this.readyState == 4 && this.status == 200) {
+      var dataresponse = this.response;
+      writeToFile(uniqidPhoto + '.jpg', dataresponse);
+    }else{
+      conectionCheck(this.readyState, this.status);
+    }
+  }
+  xmlhttp.open('GET', 'http://107.21.160.171/wolppi/upload/' + uniqidPhoto + '.jpg');
+
+  xmlhttp.onerror = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "start.html";
+  };
+  xmlhttp.responseType = 'blob';
+  xmlhttp.send();
+}
+
+function writeToFile(fileName, data){
+    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (directoryEntry) {
+        directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
+            fileEntry.createWriter(function (fileWriter) {
+                fileWriter.onwriteend = function (e) {
+                  controlphoto = controlphoto + 1;
+                  updatePhoto();
+                };
+                fileWriter.onerror = function (e) {
+                    console.log('Write failed: ' + e.toString());
+                };
+                var blob = new Blob([data], {type: 'image/png' });
+                fileWriter.write(blob);
+            }, errorHandler.bind(null, fileName));
+        }, errorHandler.bind(null, fileName));
+    }, errorHandler.bind(null, fileName));
+}
+
+var errorHandler = function(fileName, e) {
+  var msg = '';
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'Storage quota exceeded';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'File not found';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'Security error';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'Invalid modification';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'Invalid state';
+      break;
+    default:
+      msg = 'Unknown error';
+      break;
+  };
+  console.log('Error (' + fileName + '): ' + msg);
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <p id="demo"></p>
+  <p id="numtimes"></p>
+<script type="text/javascript" src="cordova.js"></script>
+<script>
+
+var obj      = [];
+var fileJson = [];
+var xmlhttp  = "";
+var x        = "";
+var numtimes = 0;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  var myVar = setInterval(myTimer, 3000);
+}
+
+function myTimer() {
+  var d = new Date();
+  document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+  document.getElementById("numtimes").innerHTML = numtimes;
+  verifyNewUserDB()
+}
+
+function verifyNewUserDB(){
+
+  fileJson = [];
+
+  xmlhttp  = new XMLHttpRequest();
+
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+      myObj    = this.response;
+      fileJson = JSON.parse(myObj);
+      if(fileJson[0].phone != null){
+        sendSms(fileJson);
+      }
+    }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/newuser.php", true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+//var options = {replaceLineBreaks: false,android: {intent: 'INTENT' }}; Não automático
+
+var options = {replaceLineBreaks: false,android: {intent: '' }};
+var success = function ()  {numtimes = numtimes + 1;};
+//var error   = function (e) { alert('Message Failed:' + e); sendSms(fileJson)};
+var error   = function () { };
+
+function sendSms(fileJson){
+
+  codarea     = fileJson[0].codarea;
+  phone       = fileJson[0].phone;
+  codactivate = fileJson[0].codactivate;
+
+  phonenumber = codarea.toString() + phone.toString();
+  message = "Código Wolppi " + codactivate.toString();
+
+  sms.send(phonenumber, message, options, success, error);
+
+//  verifyNewUserDB();
+}
+
+function success(){
+  abc = abc + 1;
+}
+
+</script>
+</body>
+</html>

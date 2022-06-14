@@ -1,0 +1,76 @@
+.t-wolkki {
+  display: inline-block;
+  margin-top: 2%;
+  margin-left: 2%;
+  color: #000;
+  font-size: 140%;
+  font-weight: lighter;
+}
+
+.t-activity {
+  display: inline-block;
+  margin-left: 16%;
+  list-style: none;
+  font-weight: bold;
+  font-family: 'Muli', sans-serif;
+  font-variant: small-caps;
+  font-size: 110%;
+  Color: black;
+}
+
+.imgloading{
+  margin-top: 8%;
+}
+table {
+  margin-top: 5%;
+  margin-left: 3%;
+  width:  95%;
+  height: 80%;
+  font-size: 130%;
+  font-family: sans-serif;
+  font-weight: bold;
+  /* border-width: 2px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #2a2b29; */
+  background-color: white;
+  overflow: auto;
+}
+
+tbody{
+color: black;
+padding:5px;
+width:85%;
+height:80%;
+overflow:auto;
+}
+
+.tableicon{
+  width:15%;
+  background-color: white;
+  color: black;
+  opacity: 1;
+}
+
+.radio{
+  font-size: 100%;
+  background-color: white;
+  color: black;
+  opacity: 1;
+}
+
+.register {
+  margin-left: 36%;
+  margin-top: 4%;
+  text-align: center;
+  background-color: #36b051;
+  border: none;
+  color: #fff;
+  font-size: 90%;
+  font-family: 'Muli', sans-serif;
+  font-weight: bold;
+  outline: none;
+  border-radius: 30px;
+  width: 100px;
+  height: 35px;
+}

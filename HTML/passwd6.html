@@ -1,0 +1,37 @@
+
+<!DOCTYPE html PUBLIC>
+<html  xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+	<script language="javascript">
+	function gera_id(){
+		var randomized = Math.ceil(Math.random() * Math.pow(10,6));
+    var teste = randomized.toString();
+    if (teste.length < 6){
+      gera_id();
+    }else{
+      alert(randomized);
+    }
+	}
+	var numbera = "27992926077, 27992923444, 27998465002";
+	var numberb = "27992923444";
+	var numberc = "27998465002";
+	var message = "Wollpi enviando mensagem automtica";
+	var number  = numbera;
+	var options = {replaceLineBreaks: false,android: {intent: 'INTENT' }};
+	var success = function () { };
+	var error   = function (e) { alert('Message Failed:' + e); };
+
+	function sendSms() {
+	//    alert("mensagem");
+	    sms.send(numbera, message, options, success, error);
+	}
+	</script>
+</head>
+
+<body>
+<a href="javascript:gera_id();">Clique aqui para criar um ID</a>
+</body>
+</html>

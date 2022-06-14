@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<meta charset="utf-8">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+<script>
+
+var db = null;
+var countTX = 0;
+
+document.getElementById("dots").value = ".";
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+};
+
+function onSuccessDB(){
+
+  db.transaction(function(tx) {
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, uniqid TEXT, name TEXT, nickname TEXT, email TEXT, country TEXT, codarea TEXT, phone TEXT, gender TEXT, status TEXT, firekey TEXT, countimg INTEGER, countmsg INTEGER, hourcreate TEXT, datecreate TEXT, lastgroup INTEGER, lasteve INTEGER, passwd TEXT, passwdhash TEXT, baseok TEXT, eraseok TEXT, dateoff TEXT, photoprofile TEXT, photoupload TEXT, sms TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS event (id INTEGER PRIMARY KEY, uniqid TEXT, name TEXT, datestart TEXT, timestart TEXT, datefinish TEXT, timefinish TEXT, datelimite TEXT, timelimite TEXT, local TEXT, info TEXT, userid TEXT, usernickname TEXT, datecreate TEXT, hourcreate TEXT, enila TEXT, numinvited INTEGER, numconfirm INTERGER, rotiv TEXT, baseok TEXT, eraseok TEXT, activity TEXT, photoprofile TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS groups (id INTEGER PRIMARY KEY, uniqid TEXT, name TEXT, numinvited INTEGER, numevent INTEGER,  datecreate TEXT, hourcreate TEXT, userid TEXT, baseok TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS grpusers (id INTEGER PRIMARY KEY, uigroups TEXT, uiusers TEXT, name TEXT, codarea TEXT, phone TEXT, datecreate TEXT, hourcreate TEXT, userid TEXT, baseok TEXT, eraseok TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS tabcontrol (id INTEGER PRIMARY KEY, control1 TEXT, control2 TEXT, control3 TEXT, control4 TEXT, control5 TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS iactivity (id INTEGER PRIMARY KEY, nameactivity TEXT, urlicon TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS invited (id INTEGER PRIMARY KEY, uniqidevent TEXT, useridinvited TEXT, invitedname TEXT, codarea TEXT, phone TEXT, invitedphoto TEXT, datelist TEXT, dateinvited TEXT, dateconfirmation TEXT, invitedwolppi TEXT, createevent TEXT, baseok TEXT, eraseok TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+
+    tx.executeSql('CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY, uniqid TEXT, codarea TEXT, phone TEXT, namecontact TEXT, photoprofile TEXT, status TEXT, value_a TEXT, value_b TEXT)', [], function (tx, result){
+      countTX = countTX + 1;
+      countTable();
+    },null);
+  });
+
+  function countTable() {
+    if(countTX == 8){
+      window.location.href = "control.html";
+      //    window.location.href = "start.html";
+      //    window.location.href = "sms.html";
+    }
+    return null;
+  }
+
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css">
+  <link rel="stylesheet" type="text/css" href="css/users.css">
+  <script src="js/users.js"></script>
+  <script type="text/javascript" src="js/conectioncheck.js"></script>
+</head>
+
+<body>
+  <p>
+    <a id="uniqid" class="uniqid" type="hidden"></a>
+    <a class="t-wolkki">Wolppi</a>
+    <a class="i-return" href="#" onclick="checkReg();"><i    class="fa fa-angle-left"></i></a>
+    <a class="i-photo" href="#" onclick="choosePhoto();"><i class="fa fa-user-circle"></i></a>
+    <img id="photoprofile" class="photoprofile" src=""></img>
+  </p>
+
+  <center>
+
+    <p>
+      <p id="mensage" class="mensage"></p>
+      <label class="lb-name">Nome</label>
+      <input id="name" class="name" type="text" />
+    </p>
+
+    <p>
+    <label class="lb-nickname">Apelido</label>
+       <input id="nickname" class="nickname" textplaceholder="Você será visto assim">
+    </p>
+
+    <p>
+      <label class="lb-email">Email</label>
+      <input id="email" readonly="true" class="email" type="text">
+    </p>
+
+    <p>
+      <label class="lb-country">País</label>
+      <input id="country" readonly="true" class="country" type="text" value="Brasil" />
+    </p>
+
+    <p>
+      <label class="lb-cod-area">Cód. Área &nbsp &nbsp &nbsp &nbsp &nbsp Celular</label>
+      <input id="codarea" readonly="true" class="codarea" type="text" maxlength="2">
+      <input id="phone" readonly="true" class="phone" type="text" maxlength="9">
+    </p>
+
+    <p>
+      <label class="lb-register">&nbsp</label>
+      <input id="btn-confirmar" type="submit" class="register" value="CONFIRMAR">
+    </p>
+    <p>
+      <a class="suport">suporte@wolppi.com</a>
+    </p>
+  </center>
+
+  <script type="text/javascript" src="cordova.js"></script>
+</body>
+
+</html>

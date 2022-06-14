@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<meta charset="utf-8">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+
+<body>
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript">
+
+document.getElementById("dots").value = "..............";
+document.addEventListener("offline", onOffline, false);
+
+var rows = [];
+var db   = null;
+
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onOffline() {
+    window.location.href = "start.html";
+}
+
+function onSuccessDB(){
+  baseok = "N";
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM users WHERE baseok=? ', [baseok], function(tx, result) {
+       rows = result.rows;
+       if (rows.length > 0){
+          updateUserServer();
+       }
+       if (rows.length == 0) {
+          window.location.href = "sinccontacts.html";
+       }
+     }, null);
+  });
+}
+
+function updateUserServer(){
+
+  var loginJS = [];
+  var myObj = [];
+
+  loginJS.push({field: rows.item(0).uniqid});
+  loginJS.push({field: rows.item(0).name});
+  loginJS.push({field: rows.item(0).nickname});
+
+  obj = JSON.stringify(loginJS);
+
+  var xmlhttp, x = "";
+
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+      myObj = this.responseText;
+      if (testJSON(myObj)) {
+          updateUser(myObj);
+      }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/users.php", true);
+
+  xmlhttp.onerror = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "start.html";
+  };
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+}
+
+function updateUser(myObj) {
+  var fileJson = JSON.parse(myObj);
+  var baseok = fileJson[0].baseok;
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE users SET baseok=? WHERE id=?', [baseok, 1], onSuccess027);
+  });
+}
+
+function onSuccess027(){
+  window.location.href = "sinccontacts.html";
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

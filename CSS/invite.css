@@ -1,0 +1,174 @@
+.t-wolkki {
+  display: inline-block;
+  margin-left: 2%;
+  font-size: 130%;
+  font-family: sans-serif;
+  font-weight:lighter;
+}
+
+.t-invite {
+  display: inline-block;
+  margin-left: 16%;
+  list-style: none;
+  font-variant: small-caps;
+  font-family: 'Muli', sans-serif;
+  font-size: 120%;
+  Color: #36b051;
+}
+
+.t-invite-all{
+  display: inline-block;
+  margin-left: 6%;
+  list-style: none;
+  font-variant: small-caps;
+  font-family: 'Muli', sans-serif;
+  font-size: 120%;
+  Color: #36b051;
+}
+
+.t-invite-yes{
+  display: inline-block;
+  margin-left: 15%;
+  list-style: none;
+  font-variant: small-caps;
+  font-family: 'Muli', sans-serif;
+  font-size: 120%;
+  Color: #36b051;
+}
+
+.t-invite-no{
+  display: inline-block;
+  margin-left: 4%;
+  list-style: none;
+  font-variant: small-caps;
+  font-family: 'Muli', sans-serif;
+  font-size: 120%;
+  Color: #36b051;
+}
+
+.i-return {
+  display: inline-block;
+  margin-left: 16%;
+  list-style: none;
+  color: black;
+  font-size: 200%;
+}
+
+input:focus {
+  outline: none;
+}
+
+.name {
+  margin-left: 3%;
+  width: 90%;
+  height: 15%;
+  font-size: 22px;
+  color: #222423;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-width: 1px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #8c9294;
+}
+
+.i-search {
+  display: inline-block;
+  color: black;
+  margin-left: -10%;
+  font-size: 100%;
+}
+
+.imglo{
+  position: fixed;
+  margin-left: 38%;
+  margin-top: 10%;
+  width: 20%;
+
+}
+table {
+  margin-top: 5%;
+  margin-left: 1%;
+  font-size: 120%;
+  font-family: sans-serif;
+  font-weight: bold;
+  overflow: auto;
+}
+
+tbody{
+color: black;
+padding:5px;
+width:90%;
+height:75%;
+overflow:auto;
+}
+
+.i-groups {
+  position: fixed;
+  bottom: 6%;
+  margin-left: 8%;
+  color: black;
+  font-size: 200%;
+}
+
+.i-send {
+  position: fixed;
+  bottom: 4%;
+  margin-left: 42%;
+  color: #0da205;
+  font-size: 300%;
+}
+
+.i-contact {
+  position: fixed;
+  bottom: 6%;
+  margin-left: 76%;
+  color: black;
+  font-size: 200%;
+  width: 10%;
+}
+
+.lb-group1 {
+  position: fixed;
+  bottom: 3%;
+  margin-left: 1%;
+  color: black;
+  font-size: 80%;
+}
+
+.lb-send1 {
+  position: fixed;
+  bottom: 3%;
+  margin-left: 37%;
+  color: black;
+  font-size: 80%;
+}
+
+.lb-contact1 {
+  position: fixed;
+  bottom: 3%;
+  margin-left: 66%;
+  color: black;
+  font-size: 80%;
+}
+
+.imginvited{
+  display: inline-block;
+  text-align: right;
+  border-right: 3%;
+  width:  60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: white;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.photoprofile_big{
+ position: fixed;
+ margin-left: auto;
+ margin-top: 1%;
+ width: 300px;
+ width: 300px;
+ border-radius: 10%;
+ -webkit-tap-highlight-color: transparent;
+}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <p>
+    <a class="waiting">Enviando Convites...</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+<meta charset="utf-8">
+<body>
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+
+<script type="text/javascript">
+
+
+var countJS       = 0;
+var fileJson      = "";
+var obj           = "";
+var baseok        = "";
+var uniqidevent   = "";
+var dateinvitede  = "";
+var invitedupdate = "";
+var myObj         = [];
+var invitedJS     = [];
+var rowscontrol   = [];
+var invitedrows   = [];
+var rowsinvited   = [];
+var firekeyJSON   = [];
+var db            = null;
+document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("offline", onOffline, false);
+
+function onDeviceReady() {
+  document.addEventListener("backbutton", function() { }, false);
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+}
+
+function onOffline() {
+  navigator.notification.beep(1);
+  navigator.notification.alert('Você está off-line! \nAtive Wi-Fi ou Dados Móveis.\nConvites não enviados.', null, 'Wolppi', 'OK' );
+  window.location.href = "invite.html";
+}
+
+function onSuccessDB(){
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM tabcontrol WHERE id=?', [1], function(tx, result) {
+      rowscontrol = result.rows;
+      if (rowscontrol.item(0).control2 == "1"){
+        navigator.notification.alert('Evento não atualizado na base Wolppi!\nÉ necessário estar On-line.', null, 'Wolppi', 'OK' );
+        window.location.href = "indexsinc.html";
+      }else{
+        uniqidevent = rowscontrol.item(0).control2;
+        selectInvited(uniqidevent);
+      };
+    }, null);
+  });
+}
+
+function selectInvited(uniqidevent){
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE uniqidevent=? AND dateinvited IS NULL', [uniqidevent], function(tx, results) {
+      invitedrows = results.rows;
+      if (invitedrows.length > 0) {
+          createJson();
+      }
+      else{
+          window.location.href = "start.html";
+      }
+    }, null);
+  });
+}
+
+function createJson() {
+  countJS = 0;
+  for (var i = 0; i < invitedrows.length; i++) {
+    invitedJS.push({id: invitedrows.item(i).id,
+           uniqidevent: invitedrows.item(i).uniqidevent,
+               codarea: invitedrows.item(i).codarea,
+                 phone: invitedrows.item(i).phone});
+    countJS = countJS + 1;
+  }
+  if (countJS >= invitedrows.length ){
+     if (invitedJS.length > 0){
+        updateDateInvitedDB();
+     }
+  }
+}
+
+function updateDateInvitedDB() {
+  obj = JSON.stringify(invitedJS);
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.responseText;
+       if (testJSON(myObj)) {
+           updateInvitedApp(myObj);
+       }else{
+           window.location.href = "start.html";
+       }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/dateinviteddb.php", true);
+
+  xmlhttp.timeout = 3000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "start.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+var count028 = 0;
+
+function updateInvitedApp(myObj){
+
+  fileJson = JSON.parse(myObj);
+
+  var valuserid = ""
+  if(fileJson[count028].uniqid == null){
+    valuserid = "1";
+  }else{
+    valuserid = fileJson[count028].uniqid;
+  }
+
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE invited SET dateinvited=?, useridinvited=?, invitedwolppi=? WHERE id=?', [fileJson[count028].dateinvited, valuserid, fileJson[count028].invitedwolppi, fileJson[count028].idapp], onSuccess028);
+  });
+}
+
+function onSuccess028(){
+  count028 = count028 + 1;
+  if(count028 >= fileJson.length){
+    checkInvitedPhotoprofile();
+  }else{
+    updateInvitedApp(myObj);
+  }
+}
+
+function checkInvitedPhotoprofile() {
+  var valueOne = "1";
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE uniqidevent=? AND useridinvited<>?', [uniqidevent, valueOne], function(tx, result) {
+      rowsinvited = result.rows;
+      if(rowsinvited.length == 0){
+        window.location.href = "start.html";
+      }else{
+        controlInvited(rowsinvited);
+      }
+    }, null);
+  });
+}
+
+var countInv = 0;
+function controlInvited(rowsinvited){
+  if(countInv < rowsinvited.length){
+    downloadPhotoInvited(rowsinvited.item(countInv).useridinvited);
+  }else{
+    window.location.href = "start.html";
+  }
+}
+
+function downloadPhotoInvited(uniqidphoto) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function (e) {
+    if(this.readyState == 4 && this.status == 200) {
+      var dataresponse = this.response;
+      writeToFileInvited(uniqidphoto + '.jpg', dataresponse);
+    } else{
+      conectionCheck(this.readyState, this.status);
+    }
+  }
+  xmlhttp.open('GET', 'http://107.21.160.171/wolppi/upload/' + uniqidphoto + '.jpg');
+
+  xmlhttp.onerror = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "start.html";
+  };
+
+  xmlhttp.responseType = 'blob';
+  xmlhttp.send();
+}
+
+function writeToFileInvited(fileName, data) {
+    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (directoryEntry) {
+        directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
+            fileEntry.createWriter(function (fileWriter) {
+                fileWriter.onwriteend = function (e) {
+                  newphoto = cordova.file.dataDirectory + fileName;
+                  savePhotoDownInvited(newphoto);
+                };
+                fileWriter.onerror = function (e) {
+                    console.log('Write failed: ' + e.toString());
+                };
+                var blob = new Blob([data], {type: 'image/png' });
+                fileWriter.write(blob);
+            }, errorHandler.bind(null, fileName));
+        }, errorHandler.bind(null, fileName));
+    }, errorHandler.bind(null, fileName));
+}
+
+function savePhotoDownInvited(newphoto) {
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE invited SET invitedphoto=? WHERE id=?', [newphoto, invitedupdate], onSuccess029);
+  });
+};
+
+function onSuccess029(){
+  countInv = countInv + 1;
+  controlInvited(rowsinvited)
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+
+var errorHandler = function(fileName, e) {
+  var msg = '';
+
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'Storage quota exceeded';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'File not found';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'Security error';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'Invalid modification';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'Invalid state';
+      break;
+    default:
+      msg = 'Unknown error';
+      break;
+  };
+  console.log('Error (' + fileName + '): ' + msg);
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

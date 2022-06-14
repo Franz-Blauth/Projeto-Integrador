@@ -1,0 +1,31 @@
+/**
+ * @Author: Franz Blauth <blauth>
+ * @Date:   2018-04-20T22:19:57-03:00
+ * @Email:  franz@wolkki.com
+ * @Project: Wolkki
+ * @Last modified by:   blauth
+ * @Last modified time: 2018-04-28T15:53:16-03:00
+ */
+
+ .swal-wide {
+   margin-top: 10px;
+   background-color: white;
+   font-size: 10px;
+   width: 300px;
+   border-radius: 20px;
+   border-style: solid;
+   border-color: #03c1c1;
+   font-family: sans-serif;
+   font-weight: bold;
+}
+
+.swal-ok {
+  background-color: white;
+  font-size: 10px;
+  width: 300px;
+  border-radius: 20px;
+  border-style: solid;
+  border-color: #39af45;
+  font-family: sans-serif;
+  font-weight: bold;
+}

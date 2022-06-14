@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+</center>
+
+<body>
+<script>
+
+var invitedrows   = [];
+var rowsinvited   = [];
+var rowscontrol   = [];
+var invitedJS     = [];
+var fileJsonParse = [];
+var myObj         = [];
+var obj           = "";
+var uniqidevent   = "";
+var controlsave   = 0;
+var db            = null;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+}
+
+function onSuccessDB(){
+  var networkState = navigator.connection.type;
+  if(networkState == "none" || networkState == Connection.NONE){
+    navigator.notification.alert('Você está Offline, informações poderão estar desatualizadas.', null,'Wolppi','OK');
+    window.location.href = "event.html";
+  }else{
+    checkControl();
+  }
+}
+
+function checkControl(){
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM tabcontrol', [], function(tx, result) {
+      rowscontrol = result.rows;
+      uniqidevent = rowscontrol.item(0).control2;
+      countInvited(uniqidevent);
+    }, null);
+  });
+}
+
+function countInvited(uniqidevent) {
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE uniqidevent=?' , [uniqidevent], function(tx, result) {
+      rowsinvited = result.rows;
+      if (rowsinvited.length > 0){
+         getdateconfirmationmDB(uniqidevent);
+      }else{
+         window.location.href = "event.html";
+      }
+    }, null);
+  });
+}
+
+function getdateconfirmationmDB(uniqidevent){
+  invitedJS.push({uniqidevent:uniqidevent});
+  obj = JSON.stringify(invitedJS);
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.response;
+       if (testJSON(myObj)){
+           fileJsonParse = JSON.parse(myObj);
+           if(fileJsonParse.length > 0){
+             controlUpdate();
+           }else{
+             window.location.href = "event.html";
+           }
+       }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/invitedconfirmall.php", true);
+
+  xmlhttp.timeout = 10000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "event.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+function controlUpdate() {
+  if(controlsave < fileJsonParse.length){
+    var dateconfirmation = fileJsonParse[controlsave].dateconfirmation;
+    var keyevent         = fileJsonParse[controlsave].uniqidevent;
+    var keyuser          = fileJsonParse[controlsave].useridinvited;
+    updateInvited(dateconfirmation, keyevent, keyuser);
+  }else{
+    window.location.href = "event.html";
+  }
+}
+
+function updateInvited(dateconfirmation, keyevent, keyuser){
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE invited SET dateconfirmation=? WHERE uniqidevent=? AND useridinvited=?', [dateconfirmation, keyevent, keyuser], onSuccess024);
+  });
+}
+
+function onSuccess024(){
+  controlsave = controlsave + 1;
+  controlUpdate();
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>
