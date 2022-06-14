@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+<body>
+<script>
+
+document.getElementById("dots").value = "....";
+
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+})
+
+function onSuccessDB(){
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM users WHERE id=? ', [1], function(tx, result) {
+      var rowsusers = result.rows;
+      if(rowsusers.item(0).status == 'opendoor'){
+         window.location.href = "sinceventui.html";
+      }else{
+        goOut();
+      }
+    }, null);
+  });
+};
+
+function goOut(){
+  navigator.notification.confirm('Ops! Algo errado com sua validação.\nDesinstale e instale o Wolppi novamente.', goOut, 'Wolppi',  ['OK']);
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+
+</body>
+</html>

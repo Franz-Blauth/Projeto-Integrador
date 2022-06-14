@@ -1,0 +1,137 @@
+table {
+  margin-left: 1%;
+  font-size: 16px;
+  color: #222423;
+  font-family: sans-serif;
+  font-weight: bold;
+  overflow: auto;
+}
+
+tbody{
+color: black;
+padding:5px;
+width:89%;
+height: 60%;
+border-width: thin;
+border-radius: 10px;
+border-style: solid;
+border-color: #8c9294;
+overflow:auto;
+}
+
+.t-wolkki {
+  display: inline-block;
+  margin-top: 2%;
+  margin-left: 5%;
+  color: #000;
+  font-size: 130%;
+  font-family: sans-serif;
+  font-weight: lighter;
+}
+
+.t-group {
+  display: inline-block;
+  margin-left: 16%;
+  list-style: none;
+  font-family: 'Muli', sans-serif;
+  font-size: 125%;
+  font-variant: small-caps;
+  Color: #29c739;
+}
+
+.i-return {
+  display: inline-block;
+  margin-left: 21%;
+  list-style: none;
+  color: black;
+  font-size: 250%;
+}
+
+.i-movedown {
+  display: inline-block;
+  margin-left: 14%;
+  list-style: none;
+  color: black;
+  font-size: 150%;
+}
+
+.register {
+  display: inline-block;
+  margin-left: 15%;
+  text-align: center;
+  background-color: #29c739;
+  border: none;
+  color: #fff;
+  font-size: 100%;
+  font-family: 'Muli', sans-serif;
+  font-weight: bold;
+  border-radius: 30px;
+  width: 100px;
+  height: 35px;
+}
+
+.i-moveup {
+  display: inline-block;
+  margin-left: 12%;
+  list-style: none;
+  color: black;
+  font-size: 150%;
+}
+
+input:focus {
+  outline: none;
+}
+
+.name:focus {
+  background-color: #c4d6d6 !important;
+}
+
+.name {
+  text-align: center;
+  margin-left: 2%;
+  width: 85%;
+  font-size: 140%;
+  font-family: 'Muli', sans-serif;
+  font-weight: lighter ;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 10px;
+  border-color: #8c9294;
+}
+
+.i-include {
+  position: fixed;
+  margin-left: 43%;
+  color: #29c739;
+  background-color: white;
+  font-size: 250%;
+  bottom: 5%;
+}
+
+.qtdgroup {
+  display: inline-block;
+  position: fixed;
+  margin-left: 7%;
+  bottom: 1%;
+  width: 18%;
+  list-style: none;
+  border: none;
+  Color: #29c739;
+  background-color: inherit;
+  font-size: 130%;
+}
+
+.t-footer-include {
+  position: fixed;
+  margin-left: 24%;
+  bottom: 1%;
+  font-size: 110%;
+  font-family: 'Muli', sans-serif;
+  font-variant: small-caps;
+}
+
+::placeholder{
+  text-align: center;
+  color: #a9a7b1;
+  opacity: 0.5;
+}

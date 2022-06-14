@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <script type="text/javascript" src="js/verifyDB.js"></script>
+</head>
+<body>
+  <a href="#" onclick="photoprofile_small()"><img id="photoprofile_big" class="photoprofile_big" src=""></a>
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+<p>
+  <input type="text" id="waiting" class="waiting" readonly>
+</p>
+<p>
+  <a class="wolppi">Wolppi</a>
+</p>
+<p>
+  <a class="suport">suporte@wolppi.com</a>
+</p>
+</center>
+
+<script>
+  addEventListener("click", function() {
+   document.getElementById("waiting").value = "Atualizando Listas...";
+    verifyUserID();
+  });
+</script>
+</body>
+<script type="text/javascript" src="cordova.js"></script>
+</html>

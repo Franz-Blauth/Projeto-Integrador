@@ -1,0 +1,35 @@
+html>
+<head>
+   <script type="text/javascript">
+     function aumentaImagem(nome){
+	nome.width = nome.width+50;
+	nome.height = nome.height+50;
+     }
+     function tamanhoNormal(nome){
+	nome.width = 150;
+	nome.height = 30;
+     }
+   </script>
+</head> 
+<body>
+   <img src="/var/www/html/json/escudoflu.png" name="logo"
+       width="150" height="30"
+       onclick="aumentaImagem(logo);"
+       ondblclick="tamanhoNormal(logo);"
+       style="cursor:pointer" />
+</body>
+</html>
+menu.style.visibility = "visible";
+
+   var lis = document.querySelectorAll("#divMenu > ul > li");
+   for (var i = 0; i < lis.length; i++) {
+       lis.item(i).addEventListener("click", function () {
+           menu.style.visibility = "hidden";
+       });
+   }
+}
+
+window.onload = function () {
+   document.addEventListener("click",
+       function () {
+           document.getElementById("divMenu").style.visibility = "hidden";

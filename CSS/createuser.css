@@ -1,0 +1,104 @@
+.logowolppi {
+  margin-top: 25%;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+input:focus {
+  outline: none;
+}
+
+label {
+  display: block;
+}
+
+input {
+  width: 170px;
+  height: 30px;
+  font-size: 16px;
+  color: #222423;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 20px;
+  border-style: solid;
+  border-color: #8c9294;
+}
+
+.phone:focus,
+.codarea:focus,
+.email:focus {
+  background-color: #d3d3d3 !important;
+}
+
+::-webkit-input-placeholder{
+   font-size:90%;
+   color: #d3d3d3;
+}
+
+.lb-welcome {
+  font-size: 120%;
+  font-family: 'Muli', sans-serif;
+  font-weight: bold;
+}
+
+.lb-phone {
+  margin-top: 10%;
+  font-weight: bold;
+  font-size: 120%;
+  font-family: sans-serif;
+}
+
+.codarea {
+  width: 50px;
+}
+
+.phone {
+  width: 110px;
+}
+
+.lb-email {
+  font-weight: bold;
+  font-size: 120%;
+  font-family: sans-serif;
+}
+
+.email{
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: bold;
+  width: 300px;
+
+}
+
+.register {
+  text-align: center;
+  background-color: #36b051;
+  color: #fff;
+  font-size: 20px;
+  font-family: 'Muli', sans-serif;
+  border-radius: 30px;
+  border-style: solid;
+  border-color: #8c9294;
+  width: 160px;
+  height: 32px;
+}
+
+.imgloading {
+  position: absolute;
+  margin-left: 38%;
+  margin-top: 3%;
+  height: 10%;
+  border-style: solid;
+  border-color: white;
+  opacity: 1;
+}
+
+.lb-vea {
+  position: fixed;
+  bottom: 3%;
+  margin-left: 40%;
+  font-size: 30%;
+  font-family: sans-serif;
+}

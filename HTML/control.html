@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<meta charset="utf-8">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+
+<body>
+<script>
+
+var icount        = 0;
+var countactivity = 0;
+var db            = null;
+var urlicon       = [];
+var nameactivity  = [];
+
+document.addEventListener("deviceready", function() {
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onSuccessDB(){
+  checkControl();
+}
+
+document.getElementById("dots").value = "..";
+
+function checkControl() {
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM tabcontrol', [], function(tx, result) {
+      rows = result.rows;
+      if(rows.length == 0) {
+        firstControl();
+      }
+      if(rows.length != 0) {
+        clearControl();
+      }
+    }, null);
+  });
+};
+
+function firstControl() {
+
+  var control1 = "";
+  var control2 = "";
+  var control3 = "";
+  var control4 = "";
+  var control5 = "";
+
+  db.transaction(function(tx) {
+    tx.executeSql('INSERT INTO tabcontrol (control1, control2, control3, control4, control5) VALUES (?, ?, ?, ?, ?)', [control1, control2, control3, control4, control5], onSuccess063);
+  });
+}
+
+function onSuccess063(){
+  firstContact();
+}
+
+function firstContact(){
+
+  var uniqid = "";
+  var codarea = "";
+  var phone = "";
+  var namecontact = "";
+  var photoprofile = "";
+  var status = "";
+  var value_a = "";
+  var value_b = "";
+
+  db.transaction(function(tx) {
+    tx.executeSql('INSERT INTO contacts (uniqid, codarea, phone, namecontact, photoprofile, status, value_a, value_b) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [uniqid, codarea, phone, namecontact, photoprofile, status, value_a, value_b], onSuccess083);
+  });
+}
+
+function onSuccess083() {
+  checkActivity();
+}
+
+function clearControl() {
+
+  control1 = "";
+  control2 = "";
+  control3 = "";
+  control4 = "";
+  control5 = "";
+
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE tabcontrol SET control1=?, control2=?, control3=?, control4=?, control5=? WHERE id=?', [control1, control2, control3, control4, control5, 1], onSuccess083)
+  });
+}
+
+function checkActivity() {
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM iactivity', [], function(tx, result) {
+      rows = result.rows;
+      if (rows.length == 0) {
+        firstActivity();
+      } else{
+        window.location.href = "token.html";
+      }
+    }, null);
+  });
+};
+
+function firstActivity() {
+
+  urlicon[00] = "iconactivity/exclamation.png";
+  urlicon[01] = "iconactivity/ballsoccer.png";
+  urlicon[02] = "iconactivity/barbecue.png";
+  urlicon[03] = "iconactivity/beach.png";
+  urlicon[04] = "iconactivity/beer.jpg";
+  urlicon[05] = "iconactivity/bike.png";
+  urlicon[06] = "iconactivity/bikemountain.png";
+  urlicon[07] = "iconactivity/cake.png";
+  urlicon[08] = "iconactivity/coffee.png";
+  urlicon[09] = "iconactivity/lunch.jpeg";
+  urlicon[10] = "iconactivity/family.png";
+  urlicon[11] = "iconactivity/friends.png";
+  urlicon[12] = "iconactivity/jetski.png";
+  urlicon[13] = "iconactivity/kids.png";
+  urlicon[14] = "iconactivity/kite.png";
+  urlicon[15] = "iconactivity/meeting.png";
+  urlicon[16] = "iconactivity/moto.png";
+  urlicon[17] = "iconactivity/movie.png";
+  urlicon[18] = "iconactivity/nautic.png";
+  urlicon[19] = "iconactivity/paddle.png";
+  urlicon[20] = "iconactivity/audience.png";
+  urlicon[21] = "iconactivity/paraglaider.png";
+  urlicon[22] = "iconactivity/party.png";
+  urlicon[23] = "iconactivity/pray.png";
+  urlicon[24] = "iconactivity/raquet.png";
+  urlicon[25] = "iconactivity/running.jpg";
+  urlicon[26] = "iconactivity/sailing.png";
+  urlicon[27] = "iconactivity/school.png";
+  urlicon[28] = "iconactivity/study.png";
+  urlicon[29] = "iconactivity/swimming.png";
+  urlicon[30] = "iconactivity/tea.png";
+  urlicon[31] = "iconactivity/dinner.jpeg";
+  urlicon[32] = "iconactivity/trekking.png";
+  urlicon[33] = "iconactivity/vehicle.png";
+  urlicon[34] = "iconactivity/volleyball.png";
+  urlicon[35] = "iconactivity/walking.png";
+  urlicon[36] = "iconactivity/wind.png";
+  urlicon[37] = "iconactivity/wine.png";
+  urlicon[38] = "iconactivity/music.png";
+  urlicon[39] = "iconactivity/exercise.png";
+  urlicon[40] = "iconactivity/travel.png";
+  urlicon[41] = "iconactivity/event.png";
+  urlicon[42] = "iconactivity/opening.png";
+  urlicon[43] = "iconactivity/outdoor.png";
+  urlicon[44] = "iconactivity/triathlon.png";
+  urlicon[45] = "iconactivity/console.png";
+  urlicon[46] = "iconactivity/poker.png";
+
+  nameactivity[00] = " Nenhuma";
+  nameactivity[01] = "Futebol";
+  nameactivity[02] = "Churrasco";
+  nameactivity[03] = "Praia";
+  nameactivity[04] = "Beer";
+  nameactivity[05] = "Bike";
+  nameactivity[06] = "Bike Mountain";
+  nameactivity[07] = "Aniversário";
+  nameactivity[08] = "Café";
+  nameactivity[09] = "Almoço";
+  nameactivity[10] = "Família";
+  nameactivity[11] = "Amigos";
+  nameactivity[12] = "Jetski";
+  nameactivity[13] = "Kids";
+  nameactivity[14] = "Kite";
+  nameactivity[15] = "Reunião";
+  nameactivity[16] = "Moto";
+  nameactivity[17] = "Cinema";
+  nameactivity[18] = "Náutica";
+  nameactivity[19] = "Remo";
+  nameactivity[20] = "Palestra";
+  nameactivity[21] = "Parapente";
+  nameactivity[22] = "Festa";
+  nameactivity[23] = "Religião";
+  nameactivity[24] = "Tennis";
+  nameactivity[25] = "Corrida";
+  nameactivity[26] = "Vela";
+  nameactivity[27] = "Aula";
+  nameactivity[28] = "Estudo";
+  nameactivity[29] = "Natação";
+  nameactivity[30] = "Chá";
+  nameactivity[31] = "Jantar";
+  nameactivity[32] = "Trekking";
+  nameactivity[33] = "Veículo";
+  nameactivity[34] = "Volley";
+  nameactivity[35] = "Caminhada";
+  nameactivity[36] = "Wind";
+  nameactivity[37] = "Wine";
+  nameactivity[38] = "Música";
+  nameactivity[39] = "Fitness";
+  nameactivity[40] = "Viagem";
+  nameactivity[41] = "Evento";
+  nameactivity[42] = "Inauguração";
+  nameactivity[43] = "Laser";
+  nameactivity[44] = "Triathlon";
+  nameactivity[45] = "Game";
+  nameactivity[46] = "Baralho";
+
+  if(nameactivity[46] == "Baralho"){
+    createTableActivity();
+  }
+}
+
+function createTableActivity(){
+  if(countactivity < 47){
+    saveActivity();
+  }else{
+    window.location.href = "token.html";
+  }
+}
+
+function saveActivity(){
+  db.transaction(function(tx){
+    tx.executeSql('INSERT INTO iactivity (nameactivity, urlicon) VALUES (?,?)', [nameactivity[countactivity], urlicon[countactivity]], onSuccess230);
+  }, null);
+}
+
+function onSuccess230() {
+  countactivity = countactivity + 1;
+  createTableActivity();
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+
+</html>

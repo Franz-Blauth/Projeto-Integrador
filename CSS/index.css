@@ -1,0 +1,67 @@
+.logowolppi {
+  margin-top: 15%;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.wolppi{
+  margin-top: 3%;
+  font-family: "Aaargh", sans-serif;
+  font-weight: lighter;
+  font-size: 400%;
+}
+
+.imgloading{
+  margin-top: 10%;
+  height: 70px;
+  width: 70px;
+  opacity: 1;
+}
+
+.t-wolppi{
+  position: fixed;
+  display: inline-block;
+  margin-top: 20%;
+  color: #000;
+  font-size: 150%;
+  font-family: "Aaargh", sans-serif;
+  font-weight: bold;
+}
+.waiting{
+  border: none;
+  margin-top: 10%;
+  color: #17baac;
+  font-size: 100%;
+  text-align: center;
+  outline: none;
+}
+
+.suport{
+  margin-top: 30%;
+  font-size: 100%;
+  font-family: "Aaargh", sans-serif;
+}
+
+.dots{
+  border: none;
+  margin-top: 12%;
+  font-size: 250%;
+  text-align: left;
+  color: #17baac;
+}
+
+.tbody-register{
+  position: absolute;
+  background-color: white;
+}
+
+.photoprofile_big{
+ position: fixed;
+ margin-top: 10%;
+ margin-left: 2%;
+ width: 300px;
+ width: 300px;
+ border-radius: 10%;
+ -webkit-tap-highlight-color: transparent;
+}

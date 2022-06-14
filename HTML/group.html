@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/group.css">
+</head>
+<body>
+  <p>
+    <a class="t-wolkki">Wolppi</a>
+    <a class="t-group">Grupos</a>
+    <a class="i-return" href="#" onclick="callPageStart()"><i class="fa fa-angle-left"></i></a>
+  </p>
+  <center>
+    <p>
+      <input id="name" class="name" type="text" placeholder="Digite o nome do novo Grupo" />
+    </p>
+  </center>
+  <p>
+    <a class="i-movedown" href="#" onclick="moveDown();"><i class="fa fa-angle-double-left"></i></a>
+    <input id="btn-confirmar" type="submit" class="register" value="Confirmar">
+    <a class="i-moveup"   href="#" onclick="moveUp()"><i class="fa fa-angle-double-right "></i></a>
+  </p>
+  <table>
+    <tbody id="tbody-register" class="tbody-register"></tbody>
+  </table>
+  <p>
+    <a class="i-include" href="#" onclick="callContacts()"><i class="fas fa-plus-circle"></i></a>
+  </p>
+  <p>
+    <input id="qtdgroup" class="qtdgroup" readonly >
+    <a class="t-footer-include">Adicionar Contatos</a>
+  </p>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script src="js/group.js"></script>
+</body>
+
+</html>

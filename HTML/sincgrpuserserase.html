@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+  <body>
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript">
+
+document.getElementById("dots").value = ".............";
+
+var grpusersJS    = [];
+var myObj         = [];
+var fileJson      = "";
+var grpusers      = "";
+var obj           = "";
+var numtimes      = 0;
+var qtdgroup      = 0;
+var uniqid        = "";
+var countJS       = 0;
+var db            = null;
+
+document.addEventListener("offline", onOffline, false);
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onOffline() {
+    window.location.href = "start.html";
+}
+
+function onSuccessDB(){
+
+  eraseok = "S";
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM grpusers WHERE eraseok=?', [eraseok], function(tx, results) {
+      grpusersrows = results.rows;
+      if (grpusersrows.length > 0) {
+          createJson();
+      }
+      if (grpusersrows.length == 0) {
+          window.location.href = "sincusers.html";
+      }
+    }, null);
+  });
+}
+
+function createJson() {
+  countJS = 0;
+  for (var i = 0; i < grpusersrows.length; i++) {
+      grpusersJS.push({id: grpusersrows.item(i).id,
+                  uiusers: grpusersrows.item(i).uiusers})
+      countJS = countJS + 1;
+  }
+  if (countJS >= grpusersrows.length){
+    obj = JSON.stringify(grpusersJS);
+    createGrpusersDB();
+  }
+}
+
+function createGrpusersDB() {
+
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+      myObj = this.response;
+       if (testJSON(myObj)) {
+           deleteGrpusers(myObj);
+       }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/delgrpusers.php", true);
+
+  xmlhttp.timeout = 3000;
+  xmlhttp.ontimeout = function (e) {
+      navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+      window.location.href = "start.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+var count023 = 0;
+function deleteGrpusers(myObj) {
+  eraseok = "S";
+  fileJson = JSON.parse(myObj);
+  db.transaction(function(tx) {
+    tx.executeSql('DELETE FROM grpusers WHERE id=? AND eraseok=?', [fileJson[count023].id, eraseok], onSuccess023);
+  });
+}
+
+function onSuccess023(){
+  count023 = count023 + 1;
+  if(count023 >= fileJson.length){
+    window.location.href = "sincusers.html";
+  }else{
+    deleteGrpusers(myObj);
+  }
+}
+
+function testJSON(jsonString) {
+  try {
+    fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

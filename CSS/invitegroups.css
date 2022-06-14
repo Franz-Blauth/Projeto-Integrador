@@ -1,0 +1,90 @@
+.t-wolkki {
+  display: inline-block;
+  margin-left: 2%;
+  font-size: 130%;
+  font-family: sans-serif;
+  font-weight:lighter;
+}
+
+.t-contacts {
+  display: inline-block;
+  margin-left: 7%;
+  list-style: none;
+  font-variant: small-caps;
+  font-family: 'Muli', sans-serif;
+  font-size: 110%;
+  Color: #36b051;
+}
+
+.i-return {
+  display: inline-block;
+  margin-left: 7%;
+  list-style: none;
+  color: black;
+  font-size: 200%;
+}
+input:focus {
+  outline: none;
+}
+
+.name {
+  margin-left: 3%;
+  width: 90%;
+  height: 15%;
+  font-size: 22px;
+  color: #222423;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-width: 1px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #8c9294;
+}
+
+.i-search {
+  display: inline-block;
+  color: black;
+  margin-left: -10%;
+  font-size: 100%;
+}
+
+.imglo{
+  position: fixed;
+  margin-left: 38%;
+  margin-top: 10%;
+  width: 20%;
+
+}
+table {
+  margin-top: 5%;
+  margin-left: 3%;
+  font-size: 130%;
+  font-family: sans-serif;
+  font-weight: bold;
+  overflow: auto;
+}
+
+tbody{
+opacity: 0.7;
+color: black;
+padding:5px;
+width:90%;
+height:80%;
+overflow:auto;
+}
+
+.register {
+  position: absolute;
+  margin-left: 33%;
+  margin-top: 120%;
+  text-align: center;
+  background-color: #36b051;
+  border: none;
+  color: #fff;
+  font-size: 90%;
+  font-family: 'Muli', sans-serif;
+  font-weight: bold;
+  border-radius: 30px;
+  width: 100px;
+  height: 35px;
+}

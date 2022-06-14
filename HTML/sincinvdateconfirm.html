@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+</center>
+
+<body>
+<script>
+
+var invitedrows   = [];
+var rowsinvited   = [];
+var rowscontrol   = [];
+var invitedJS     = [];
+var fileJsonParse = [];
+var myObj         = [];
+var obj           = "";
+var uniqidevent   = "";
+var controlsave   = 0;
+var db            = null;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+}
+
+function onSuccessDB(){
+  var networkState = navigator.connection.type;
+  if(networkState == "none" || networkState == Connection.NONE){
+    navigator.notification.alert('Você está Offline, informações poderão estar desatualizadas.', null,'Wolppi','OK');
+    window.location.href = "eventconfirm.html";
+  }else{
+    checkControl();
+  }
+}
+
+function checkControl(){
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM tabcontrol', [], function(tx, result) {
+      rowscontrol = result.rows;
+      uniqidevent = rowscontrol.item(0).control2;
+      countInvited(uniqidevent);
+    }, null);
+  });
+}
+
+function countInvited(uniqidevent) {
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE uniqidevent=?' , [uniqidevent], function(tx, result) {
+      rowsinvited = result.rows;
+      if (rowsinvited.length > 0){
+         getdateconfirmationmDB(uniqidevent);
+      }else{
+         window.location.href = "eventconfirm.html";
+      }
+    }, null);
+  });
+}
+
+function getdateconfirmationmDB(uniqidevent){
+  invitedJS.push({uniqidevent:uniqidevent});
+  obj = JSON.stringify(invitedJS);
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.response;
+       if (testJSON(myObj)){
+           fileJsonParse = JSON.parse(myObj);
+           if(fileJsonParse.length > 0){
+             controlUpdate();
+           }else{
+             window.location.href = "eventconfirm.html";
+           }
+       }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/invitedconfirmall.php", true);
+
+  xmlhttp.timeout = 10000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "eventconfirm.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+function controlUpdate() {
+  if(controlsave < fileJsonParse.length){
+    var dateconfirmation = fileJsonParse[controlsave].dateconfirmation;
+    var keyevent   = fileJsonParse[controlsave].uniqidevent;
+    var keyuser    = fileJsonParse[controlsave].useridinvited;
+    updateInvited(dateconfirmation, keyevent, keyuser);
+  }else{
+    var vdb_obj = JSON.stringify(invitedJS);
+    callEventUpdate(vdb_obj);
+  }
+}
+
+function updateInvited(dateconfirmation, keyevent, keyuser){
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE invited SET dateconfirmation=? WHERE uniqidevent=? AND useridinvited=?', [dateconfirmation, keyevent, keyuser], onSuccess024);
+  });
+}
+
+function onSuccess024(){
+  controlsave = controlsave + 1;
+  controlUpdate();
+}
+
+function callEventUpdate(vdb_obj){
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if(this.readyState == 4 && this.status == 200) {
+      vdb_obj_response = this.responseText;
+      if(testJSON(vdb_obj_response)){
+         updateEvent(vdb_obj_response);
+      }
+    }else{
+          conectionCheck(this.readyState, this.status);
+         }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/importeventmodify.php", true);
+
+  xmlhttp.timeout = 13000;
+  xmlhttp.ontimeout = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "eventconfirm.html";
+  };
+
+  xmlhttp.onerror = function (e) {
+    navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+    window.location.href = "eventconfirm.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + vdb_obj);
+}
+
+function updateEvent(vdb_obj_response){
+
+  var vdb_obj_resp = JSON.parse(vdb_obj_response);
+
+  var uniqid      = vdb_obj_resp[0].uniqid;
+  var name        = vdb_obj_resp[0].name;
+  var datestart   = vdb_obj_resp[0].datestart;
+  var timestart   = vdb_obj_resp[0].timestart;
+  var datefinish  = vdb_obj_resp[0].datefinish;
+  var timefinish  = vdb_obj_resp[0].timefinish;
+  var local       = vdb_obj_resp[0].local;
+  var info        = vdb_obj_resp[0].info;
+  var activity    = vdb_obj_resp[0].activity;
+
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE event SET name=?, datestart=?, timestart=?, datefinish=?, timefinish=?, local=?, info=?, activity=? WHERE uniqid=?', [name, datestart, timestart, datefinish, timefinish, local, info, activity, uniqid], function(tx, result) {
+       window.location.href = "eventconfirm.html";
+    }, null);
+  });
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

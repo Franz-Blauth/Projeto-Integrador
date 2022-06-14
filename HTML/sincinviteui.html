@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+<body>
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script>
+
+document.getElementById("dots").value = ".......";
+
+var eventrows    = [];
+var invitedrows  = [];
+var invitedJS    = [];
+var invitedJSUI  = [];
+var baseok       = "";
+var uniqideventid = "";
+var id = 0;
+var idevnt = 0;
+var countJS = 0;
+var exit23 = 0;
+var db = null;
+
+document.addEventListener("offline", onOffline, false);
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onOffline() {
+  window.location.href = "start.html";
+}
+
+function onSuccessDB(){
+
+  countinvite = 0
+  baseok = "1";
+
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM invited WHERE baseok=?', [baseok], function(tx, results) {
+      invitedrows = results.rows;
+
+      if(invitedrows.length == 0){
+        window.location.href = "sincinvitedb.html";
+      }
+
+      for(i = 0; i < invitedrows.length; i++){
+
+        countinvite = countinvite + 1;
+
+        if (invitedrows.item(i).uniqidevent.length < 20){
+          invitedJS.push({id: invitedrows.item(i).id, uniqidevent: parseInt(invitedrows.item(i).uniqidevent)});
+        }
+
+        if(countinvite >= invitedrows.length){
+          if(invitedJS.length > 0){
+            getUniqIDEvent();
+          }else{
+            window.location.href = "sincinvitedb.html";
+          }
+        }
+      }
+    }, null);
+  });
+}
+
+function getUniqIDEvent(){
+  countevent = 0;
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM event', [], function(tx, results) {
+      eventrows = results.rows;
+      for(i = 0; i < eventrows.length; i++){
+        countevent = countevent + 1;
+        invitedJSUI.push({id: eventrows.item(i).id, uniqidevent: eventrows.item(i).uniqid});
+        if(countevent >= eventrows.length){
+           loopInvited();
+        }
+      }
+    });
+  })
+}
+
+var count026 = 0;
+
+function loopInvited(){
+  if(countJS >= invitedJS.length){
+   window.location.href = "sincinvitedb.html";
+  }else{
+    count026 = 0;
+    updateLoopInvited()
+  }
+}
+
+function updateLoopInvited(){
+  db.transaction(function(tx) {
+    if(invitedJS[countJS].uniqidevent == invitedJSUI[count026].id){
+      tx.executeSql('UPDATE invited SET uniqidevent=? WHERE id=?', [invitedJSUI[count026].uniqidevent, invitedJS[countJS].id], onSuccess026)
+    }
+  });
+}
+
+function onSuccess026(){
+  count026 = count026 + 1;
+  if(count026 >= invitedJSUI.length){
+    countJS  = countJS  + 1;
+    loopInvited();
+  }else{
+    updateLoopInvited();
+  }
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

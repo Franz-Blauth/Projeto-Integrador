@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<body>
+<center>
+  <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+  <p>
+    <a class="wolppi">Wolppi</a>
+  </p>
+  <p>
+    <a class="suport">suporte@wolppi.com</a>
+  </p>
+  <img class="imgloading" src="tenor.gif">
+  <meta charset="utf-8">
+  <input type="text" id="dots" class="dots" readonly>
+</center>
+
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript">
+
+document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("offline", onOffline, false);
+document.getElementById("dots").value = "...............";
+
+function onOffline() {
+  window.location.href = "start.html";
+}
+
+var usersrows        = [];
+var contactsJS       = [];
+var clearphone       = "";
+var startstring      = "";
+var celphone         = "";
+var phone9           = "";
+var codarea_l2       = "";
+var invitedname      = "";
+var user_codarea     = "";
+var count_contacts   = 0;
+var k                = 0;
+var countreg         = 0;
+var db               = null;
+
+
+function onDeviceReady(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+}
+
+function onSuccessDB(){
+  var options = new ContactFindOptions();
+  options.filter = "";
+  options.multiple = true;
+  filter = ["id"]; // return contact.displayName
+  navigator.contacts.find(filter, onSuccess, onError, options);
+}
+
+function onSuccess(contacts) {
+
+  db.transaction(function(tx) {
+  tx.executeSql('SELECT * FROM users', [], function(tx, result) {
+    usersrows = result.rows;
+    user_codarea  = usersrows.item(0).codarea;
+    createContactsJSON(contacts);
+    }, null);
+  });
+}
+
+function createContactsJSON(contacts){
+
+  for(i = 0; i < contacts.length; i++){
+
+    if(contacts[i].name != null && contacts[i].phoneNumbers != null && contacts[i].id != null){
+
+      invitedname = contacts[i].name.formatted;
+      clearphone  = contacts[i].phoneNumbers[0].value.replace(/[^a-zA-Z0-9]/g, '')
+      startstring = clearphone.length - 11;
+
+      if(clearphone.length >= 11) {
+        celphone   = clearphone.substring(startstring, (startstring + 11));
+        if(celphone.substring(2,3) == "9"){
+          phone9     = celphone.substring(2,11);
+          codarea_l2 = celphone.substring(0,2);
+          contactsJS.push({name: invitedname, phone: phone9, codarea: codarea_l2});
+        }
+      }else{
+        if(clearphone.length == 9) {
+          if(clearphone.substring(0,1) == "9"){
+            phone9 = clearphone;
+            codarea_l2 = user_codarea;
+            contactsJS.push({name: invitedname, phone: phone9, codarea: codarea_l2});
+          }
+        }
+      }
+    }
+  }
+  saveContacts(contactsJS);
+}
+
+function onError(contactError) {
+  navigator.notification.confirm('Ops! O Wolppi necessita acessar seus contatos. Habilite acesso nas configurações do seu celular e inicie novamente.', onConfirm, 'Wolppi', ['OK'] );
+}
+
+function onConfirm(buttonIndex) {
+  var typeOS = device.platform;
+  if(buttonIndex != 9){
+    window.location.href = "sinccontacts.html";
+  }
+}
+
+function saveContacts(contactsJS){
+  var contactsJSON = JSON.stringify(contactsJS);
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE contacts SET value_a=? WHERE id=?', [contactsJSON, 1], onSuccess012);
+  });
+}
+
+function onSuccess012(){
+  window.location.href = "sincevents.html";
+}
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

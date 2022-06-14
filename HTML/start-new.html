@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/pagestart.css">
+  <script src="js/pagestart.js"></script>
+
+</head>
+
+<body>
+
+  <p>
+    <a class="t-wolkki">Wolppi</a>
+    <span id="Clock">00:00:00</span>
+    <a id="id-profile" class="i-profile" href="users.html"><i class="fas fa-user-circle"></i></a>
+  </p>
+
+  <p>
+    <a id="id-checkmy" class="i-checkmy" href="#" onclick="sortEvent()"><i class="fas fa-sort-alpha-up"></i></a>
+    <a id="id-include" class="i-include" href="event.html"><i class="fas fa-plus-circle"></i></a>
+    <a id="id-groups"  class="i-groups"  href="group.html"><i class="fas fa-users"></i></a>
+  </p>
+  <p>
+    <a class="t-footer-checkmay">Ordenar</a>
+    <a class="t-footer-include">Criar Evento</a>
+    <a class="t-footer-groups">Grupos</a>
+  </p>
+
+  <table>
+    <tbody id="tbody-register" class="tbody-register"></tbody>
+  </table>
+
+</body>
+<script type="text/javascript" src="cordova.js"></script>
+<!-- Listerner icons the start page -->
+<script>
+  var Elem = document.getElementById("Clock");
+
+  function Horario() {
+    var Hoje = new Date();
+    var Horas = Hoje.getHours();
+    if (Horas < 10) {
+      Horas = "0" + Horas;
+    }
+    var Minutos = Hoje.getMinutes();
+    if (Minutos < 10) {
+      Minutos = "0" + Minutos;
+    }
+    var Segundos = Hoje.getSeconds();
+    if (Segundos < 10) {
+      Segundos = "0" + Segundos;
+    }
+    Elem.innerHTML = Horas + ":" + Minutos + ":" + Segundos;
+  }
+  window.setInterval("Horario()", 1000);
+</script>
+</body>
+
+</html>

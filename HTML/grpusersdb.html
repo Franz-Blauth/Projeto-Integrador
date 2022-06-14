@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<center>
+  <img class="imgloading" src="tenor.gif">
+</center>
+</head>
+<body>
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript">
+
+var grpusersJS    = [];
+var myObj         = [];
+var fileJson      = "";
+var grpusersrows  = "";
+var grpusersparse = "";
+var obj           = "";
+var numrows       = 0;
+var numtimes      = 0;
+var baseok        = "";
+var uniqid        = 0;
+var qtdgroup      = 0;
+var countJS       = 0;
+var db           = null;
+
+document.addEventListener("offline", onOffline, false);
+document.addEventListener("deviceready", function(){
+  db = window.sqlitePlugin.openDatabase({name: 'wolppi.db', location: 'default'}, onSuccessDB);
+});
+
+function onOffline() {
+ window.location.href = "group.html";
+}
+
+function onSuccessDB(){
+  baseok = "1";
+  db.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM grpusers WHERE baseok=?', [baseok], function(tx, results) {
+      grpusersrows = results.rows;
+      if (grpusersrows.length > 0) {
+          createJson();
+      }
+      if (grpusersrows.length == 0) {
+        window.location.href = "group.html";
+      }
+    }, null);
+  });
+}
+
+function createJson() {
+  countJS = 0;
+  for (var i = 0; i < grpusersrows.length; i++) {
+
+    grpusersJS.push({id: grpusersrows.item(i).id,
+               uigroups: grpusersrows.item(i).uigroups,
+                uiusers: grpusersrows.item(i).uiusers,
+                   name: grpusersrows.item(i).name,
+                codarea: grpusersrows.item(i).codarea,
+                  phone: grpusersrows.item(i).phone});
+    countJS = countJS + 1;
+  }
+  if ( countJS >= grpusersrows.length){
+    obj = JSON.stringify(grpusersJS);
+    creategrpusersDB();
+  }
+}
+
+function creategrpusersDB() {
+
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+      myObj = this.response;
+      if (testJSON(myObj)) {
+          updateGrpusers(myObj);
+      }
+    }else{
+        conectionCheck(this.readyState, this.status);
+        }
+  }
+  xmlhttp.open("POST", "http://107.21.160.171/wolppi/grpusers.php", true);
+
+  xmlhttp.timeout = 3000;
+  xmlhttp.ontimeout = function (e) {
+      navigator.notification.alert('Servidor não encontrado!', null,'Wolppi','OK');
+      window.location.href = "group.html";
+  };
+
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + obj);
+};
+
+var count009 = 0;
+function updateGrpusers(myObj) {
+  baseok = "2";
+  fileJson = JSON.parse(myObj);
+  db.transaction(function(tx) {
+    tx.executeSql('UPDATE grpusers SET baseok=? WHERE id=?', [baseok, fileJson[count009].id], onSuccess009);
+  });
+}
+
+function onSuccess009() {
+  count009 = count009 + 1;
+  if(count009 >= fileJson.length){
+     window.location.href = "group.html";
+  }else{
+     updateGrpusers(myObj)
+  }
+}
+
+function testJSON(jsonString) {
+  try {
+    var fileJson = JSON.parse(jsonString);
+    if (fileJson && typeof fileJson === "object" && fileJson !== null) return fileJson;
+  } catch (e) {}
+  return false;
+};
+
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/createuser.css">
+  <script type="text/javascript" src="js/device.js"></script>
+</head>
+
+<body>
+  <center>
+      <img class="logowolppi" src="img/wolkki-def.jpg"></img>
+      <p>
+        <label class="lb-welcome">Bem vindo ao Wolppi !</label>
+      </p>
+      <p>
+        <label class="lb-phone">Celular</label>
+        <input id="codarea" class="codarea" type="number" onfocus="this.placeholder = ''" onblur="this.placeholder = '99' "placeholder="99">
+        <input id="phone"   class="phone"   type="number" onfocus="this.placeholder = ''" onblur="this.placeholder = '999999999'" placeholder="999999999"  maxlength="9">
+      </p>
+      <p>
+        <label class="lb-email">Email</label>
+        <input id="email" class="email" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'xxxxxxxxxx@xxx'" placeholder="xxxxxxxxx@xxx">
+      </p>
+      <p>
+        <input id="btn-confirmar" type="submit" class="register" value="CONFIRMAR">
+      </p>
+      <p>
+        <a class="lb-vea">VAP</a>
+      </p>
+  </center>
+
+  <p>
+    <img id="imgloading" class="imgloading"></img>
+  </p>
+
+</body>
+
+<script type="text/javascript" src="js/createuser.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+
+</html>

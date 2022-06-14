@@ -1,0 +1,66 @@
+ .t-wolkki{
+   display: inline-block;
+   width: 20%;
+   height: 3%;
+   margin-top:  2%;
+   margin-left: 4%;
+   color: #000;
+   font-size: 85%;
+   text-align: center;
+   font-family: sans-serif;
+   font-weight: bold;
+   position: fixed;
+ }
+
+ .i-return{
+   margin-left: 84%;
+   list-style: none;
+   color:  #185ea7;
+   font-size: 250%;
+   position: fixed;
+  }
+
+.i-photo{
+  position: fixed;
+  margin-top: 20%;
+  margin-left: 40%;
+  font-size: 250%;
+  color: #0f54a6;
+}
+
+.lb-photo{
+  position: fixed;
+  margin-top: 32%;
+  margin-left: 38%;
+  font-size: 100%;
+}
+
+.i-galery{
+  position: fixed;
+  margin-top: 45%;
+  margin-left: 40%;
+  font-size: 250%;
+  color: #e7102a;
+}
+
+.lb-galery{
+  position: fixed;
+  margin-top: 57%;
+  margin-left: 39%;
+  font-size: 100%;
+}
+
+.i-trash{
+  position: fixed;
+  margin-top: 70%;
+  margin-left: 40%;
+  font-size: 250%;
+  color: gray;
+}
+
+.lb-trash{
+  position: fixed;
+  margin-top: 82%;
+  margin-left: 33%;
+  font-size: 100%;
+}

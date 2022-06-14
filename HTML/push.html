@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<img class="imgloading" src="tenor.gif">
+</head>
+<body>
+<script type="text/javascript" src="js/conectioncheck.js"></script>
+<script type="text/javascript">
+
+var myObj        = "";
+var obj          = "";
+var json         = "";
+
+document.addEventListener("online", onOnline, false);
+document.addEventListener("offline", onOffline, false);
+
+function onOffline() {
+  window.location.href = "start.html";
+}
+
+function onOnline() {
+obj = {
+    "notification": {
+        "title": "Wolppi",
+        "body": "Hello, isso é um Push!",
+        "icon": "/var/www/html/json/escudoflu.png"
+    },
+    "registration_ids":["ckBzGfjxZ6A:APA91bG5jfytucaeSrEgx6Gm7u4YIrpTmSftfvlFrXzCXfWbl-H1g7iQmjaM2GuruCR6UoP8AUn8HcGpm1BAy-Ja57GYn_I_qK_vp0TdBMacGQerUtWOVjfghp_sQFh0lbicf2y4MnfT",
+                        "cayGfyLy9sE:APA91bGFoS0Ksj8me84W_k6beVdFUKSplW3qzqFogjn4xekNn2GeFOcJhxPKlCxHfk3D0eF7C1pGvpvpqe0mqJ4wXKNIERe0QU9EJoybk923PXYQnizsG4Jbi03OZ9jeheEr-QEhF1bm",
+                        "fkeIeABUC54:APA91bFdXA4tBPOuH93P6G3NO5XLRQKfrd2SfH8s3Knm0vq3q1flW-fD696UHKIl281yl34abxPxvCK6CRBr_Y_8CA28fSSS7JfXwIC_wa4HqfqAG6cANt2nv9yEjuKPugfd6nIkUCIq",
+                        "cWRuPzZWNjM:APA91bHNEI0_vEsoDQ5dUbjrl5K4BEJvkTHDRshwgNdWuJXU9etqbkK4zxGq0us6Q3X-xZDOE7w3lXyUBXqL4VKOpqeONrvpCq3AGDMbgCKL6vTBH3ivB6fJ1EVxTZzJmBLDpgmvxfDu"]
+  };
+  json = JSON.stringify(obj)
+  createinvitedDB();
+}
+
+function createinvitedDB() {
+  var xmlhttp, x = "";
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+       myObj = this.response;
+    }else{
+         conectionCheck(this.readyState, this.status);
+         }
+  }
+  xmlhttp.open("POST", "https://fcm.googleapis.com/fcm/send", true);
+
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+  xmlhttp.setRequestHeader("Authorization", 'key=AI......5o' );
+//  xmlhttp.responseType = 'json';
+  xmlhttp.send(json);
+};
+
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+.t-wolkki {
+  position: fixed;
+  top: 2%;
+  margin-left: 2%;
+  color: #000;
+  font-size: 140%;
+  font-family: 'Aaargh', sans-serif;
+  font-weight: lighter;
+}
+
+.update_emoji{
+  position: fixed;
+  top: 2%;
+  margin-left: 64%;
+  text-decoration:none;
+  font-size: 200%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.i-profile {
+  position: fixed;
+  top: 2%;
+  margin-left: 84%;
+  color: black;
+  font-size: 220%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.photoprofile_big{
+ position: fixed;
+ margin-top: 10%;
+ margin-left: 2%;
+ width: 300px;
+ width: 300px;
+ border-radius: 10%;
+ -webkit-tap-highlight-color: transparent;
+}
+
+tbody{
+  top: 10%;
+  font-size: 120%;
+  padding:5px;
+  width:85%;
+  height:73%;
+  overflow:auto;
+}
+
+hr{
+  height: 1px;
+}
+ 
+.whiterows{
+  font-size: 20%;
+}
+
+.tableicon{
+  width: 50%;
+  background-color: white;
+}
+
+.i-checkmy {
+  position: fixed;
+  margin-left: 5%;
+  color: black;
+  font-size: 200%;
+  bottom: 5%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.i-include {
+  position: fixed;
+  margin-left: 42%;
+  color: #0da205;
+  font-size: 250%;
+  bottom: 5%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.i-groups {
+  position: fixed;
+  margin-left: 80%;
+  color: black;
+  font-size: 200%;
+  bottom: 5%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.t-footer-checkmay {
+  position: fixed;
+  margin-left: 2%;
+  bottom: 2%;
+  font-family: 'Aaargh', sans-serif;
+  font-weight: lighter;
+  font-size: 120%;
+}
+
+.t-footer-include {
+  position: fixed;
+  margin-left: 34%;
+  bottom: 2%;
+  font-family: 'Aaargh', sans-serif;
+    font-weight: lighter;
+  font-size: 120%;
+}
+
+.t-footer-groups {
+  position: fixed;
+  margin-left: 76%;
+  bottom: 2%;
+  font-family: 'Aaargh', sans-serif;
+  font-weight: lighter;
+  font-size: 120%;
+}
